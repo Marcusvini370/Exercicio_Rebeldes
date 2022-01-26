@@ -1,9 +1,12 @@
 package com.exercicio.rebeldes;
 
-import javax.swing.*;
+import com.exercicio.rebeldes.validacoes.ValidadorCampo;
+import com.exercicio.rebeldes.validacoes.ValidadorCampoNumerico;
+import com.exercicio.rebeldes.validacoes.ValidadorCampoString;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.util.Objects;
+import javax.swing.JOptionPane;
 
 public class RebeldeView {
 
@@ -13,39 +16,44 @@ public class RebeldeView {
     private Integer idade;
     private RacaEnum raca;
 
-
     private void askNome() {
-        String nome = JOptionPane.showInputDialog("Digite o seu nome:");
-        if (nome == null || nome.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Nome inválido!");
-            askNome();
-        } else
-            this.nome = nome;
+        this.nome = JOptionPane.showInputDialog("Digite o seu nome:");
+//        if (nome == null || nome.isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Nome inválido!");
+//            askNome();
+//        } else {
+//            this.nome = nome;
+//        }
+
+        new ValidadorCampoString(nome, this::askNome).validar();
     }
 
     private void askIdade() {
-        int idade = Integer.parseInt(JOptionPane.showInputDialog("Qual a idade do Rebelde?"));
-        if ( idade <= 0) {
-            JOptionPane.showMessageDialog(null, "Idade inválida!");
-            askIdade();
-        } else {
-            this.idade = idade;}
+        this.idade = Integer.parseInt(JOptionPane.showInputDialog("Qual a idade do Rebelde?"));
+//        if (idade <= 0) {
+//            JOptionPane.showMessageDialog(null, "Idade inválida!");
+//            askIdade();
+//        } else {
+//            this.idade = idade;
+//        }
+        new ValidadorCampoNumerico(idade, this::askIdade).validar();
+
     }
 
     private void askRaca() {
 
-        RacaEnum[] raca = RacaEnum.values();
+        RacaEnum[] racas = RacaEnum.values();
 
-        RacaEnum escolhido =  (RacaEnum) JOptionPane.showInputDialog(null, "Escolha um", "Race",
-                JOptionPane.QUESTION_MESSAGE, null, raca, 3);
+        this.raca = (RacaEnum) JOptionPane.showInputDialog(null, "Escolha um", "Race",
+                JOptionPane.QUESTION_MESSAGE, null, racas, 3);
 
-
-        if (escolhido == null) {
-            JOptionPane.showMessageDialog(null, "Raça Inválida");
-            askRaca();
-        }else {
-            this.raca = escolhido;
-        }
+//        if (escolhido == null) {
+//            JOptionPane.showMessageDialog(null, "Raça Inválida");
+//            askRaca();
+//        }else {
+//            this.raca = escolhido;
+//        }
+        new ValidadorCampo<RacaEnum>(raca, this::askRaca).validar("Uma das raças deve ser escolhida!");
     }
 
     private void obtemDadosRebelde() {
@@ -63,7 +71,7 @@ public class RebeldeView {
     private void solicitaIngressoIC() {
         boolean ingressou = this.inteligenciaCentral.solicitarIngressoDeRebelde(this.rebelde);
 
-        if(ingressou) {
+        if (ingressou) {
             JOptionPane.showMessageDialog(null, "Rebelde '" + rebelde.getNome() + "' ingressou na Aliança!");
         } else {
             JOptionPane.showMessageDialog(null, "Rebelde '" + rebelde.getNome() + "' recusado!");
@@ -73,13 +81,12 @@ public class RebeldeView {
     private void exibirRebeldesIC() {
         StringBuilder reb = new StringBuilder();
         reb.append("Lista de rebeldes:\n");
-        for (Rebelde rebelde : this.inteligenciaCentral.getRebeldes())
-        {
+        for (Rebelde rebelde : this.inteligenciaCentral.getRebeldes()) {
             reb.append(rebelde.toString());
             reb.append("\n");
         }
 
-        JOptionPane.showMessageDialog(null ,reb);
+        JOptionPane.showMessageDialog(null, reb);
     }
 
     private void gerarRelatorioRebeldesIC() {
@@ -94,20 +101,16 @@ public class RebeldeView {
 
         MenuEnum[] menu = MenuEnum.values();
 
-
-
-
         boolean status = true;
         do {
-            MenuEnum menuEscolhido =  (MenuEnum) JOptionPane.showInputDialog(null, "Escolha um", "Race",
+            MenuEnum menuEscolhido = (MenuEnum) JOptionPane.showInputDialog(null, "Escolha um", "Race",
                     JOptionPane.QUESTION_MESSAGE, null, menu, MenuEnum.SOLICITAR_INGRESSO);
+            //            if (menuEscolhido == null) {
+            //                JOptionPane.showMessageDialog(null, "Ação inválida");
+            //                menuRebelde();
+            //            }
 
-            if (menuEscolhido == null){
-                JOptionPane.showMessageDialog(null, "Ação inválida");
-                menuRebelde();
-            }
-
-            switch (Objects.requireNonNull(menuEscolhido)) {
+            switch (menuEscolhido != null ? menuEscolhido : MenuEnum.SAIR) {
                 case SOLICITAR_INGRESSO:
                     obtemDadosRebelde();
                     solicitaIngressoIC();
@@ -126,7 +129,6 @@ public class RebeldeView {
                     break;
                 default:
                     JOptionPane.showMessageDialog(null, "Ação inválida");
-                    menuRebelde();
             }
         } while (status);
 

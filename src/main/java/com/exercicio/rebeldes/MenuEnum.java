@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public enum MenuEnum {
 
-    SOLICITAR_INGRESSO(" Solicitar Ingresso na Aliança") ,
-    EXIBIR_LISTA("Exibir Lista de Rebeldes") ,
-    GERAR_RELATORIO("Gerar Relatório de Rebeldes") ,
+    SOLICITAR_INGRESSO("Solicitar Ingresso na Aliança"),
+    EXIBIR_LISTA("Exibir Lista de Rebeldes"),
+    GERAR_RELATORIO("Gerar Relatório de Rebeldes"),
     SAIR("Sair");
 
     private String menu;
