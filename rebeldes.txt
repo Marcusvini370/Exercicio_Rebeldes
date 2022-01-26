@@ -1,0 +1,10 @@
+Lista de Rebeldes:
+Rebelde(nome=asdasd, idade=23, raca=Humano)
+Rebelde(nome=sdfasfas, idade=33, raca=Gree)
+Rebelde(nome=asfasf, idade=44, raca=Gree)
+Rebelde(nome=asfasfasf, idade=44, raca=Rakata)
+Rebelde(nome=asfasfasf, idade=34, raca=Humano)
+Rebelde(nome=asfasfas, idade=33, raca=Humano)
+Rebelde(nome=asfasfsa, idade=33, raca=Humano)
+Rebelde(nome=asfafasfas, idade=33, raca=Humano)
+Rebelde(nome=asdasdas, idade=33, raca=Humano)
